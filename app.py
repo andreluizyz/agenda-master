@@ -4,6 +4,7 @@ from models import db, User, Agendamento, Profissional
 from flask_migrate import Migrate
 from config import Config
 from forms import LoginForm, CadastroForm, CriarHorarioForm, AgendarHorarioForm 
+import os
 
 
 app = Flask(__name__)
