@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+   
+    <div class="container mt-5 fundo">
+        <h1>Seu Painel de Agendamentos</h1>
+        <h3>Cadastrar Novo Horário Disponível</h3>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                {{ form.data_hora.label(class="form-label") }}
+                <!-- Campo de data e hora atualizado para usar o Flatpickr -->
+                <input type="text" id="data_hora" name="data_hora" class="form-control" placeholder="Selecione a data e hora" required>
+            </div>
+            <div class="mb-3">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+    <div class="container mt-5 fundo">
+        <h2>Seus Horários Agendados</h2>
+        <div class="row">
+            {% if agendamentos %}
+                {% for agendamento in agendamentos %}
+                    <div class="col-md-4">
+                        <div class="card agendamento-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Horario: {{ agendamento.data_hora }}</h5>
+                                <p class="card-text">
+                                    {% if agendamento.nome_cliente %}
+                                    <p class="card-text"><strong>Cliente:</strong> {{ agendamento.nome_cliente }}</p>
+
+                                    {% else %}
+                                        <span class="text-warning">Aguardando cliente</span>
+                                    {% endif %}
+                                </p>
+                                <p class="card-text"><strong>Profissional:</strong> {{ agendamento.nome_profissional }}</p>                            
+                                <p class="card-text"><strong>Identificador Profissional:</strong> {{ agendamento.profissional_id }}</p>
+                            </div>
+                        </div>   
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Você ainda não tem agendamentos.</p>
+            {% endif %}
+        </div>
+
+       
+    </div>
+    <script>
+        // Inicializa o Flatpickr no campo de data e hora
+        flatpickr("#data_hora", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i", // Formato de data e hora: Ano-Mês-Dia Hora:Minuto
+            time_24hr: true, // Para horário 24h
+        });
+    </script>
+{% endblock %}

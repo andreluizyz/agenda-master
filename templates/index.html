@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+    <div class="container mt-5">
+        <h1>Agende seu horário</h1>
+        <p class="text-center"><strong>Apenas escolha um horario e clique em agendar</strong></p>
+        <div class="row">
+            {% if agendamentos %}
+                {% for agendamento in agendamentos %}
+                    <div class="col-md-4">
+                        <div class="card agendamento-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Horarios livres: {{ agendamento.data_hora }}</h5>
+                                <p class="card-text"><strong>Profissional:</strong> {{ agendamento.nome_profissional }}</p>                            
+                                <p class="card-text"><strong>Identificador Profissional:</strong> {{ agendamento.profissional_id }}</p>
+                                <a href="{{ url_for('agendar_horario', agendamento_id=agendamento.id) }}" class="btn btn-primary">Agendar</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Nenhum agendamento disponível no momento.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
