@@ -17,36 +17,40 @@
             </div>
         </form>
     </div>
+
     <div class="container mt-5 fundo">
         <h2>Seus Horários Agendados</h2>
-        <div class="row">
-            {% if agendamentos %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Horário</th>
+                    <th>Domingo</th>
+                    <th>Segunda</th>
+                    <th>Terça</th>
+                    <th>Quarta</th>
+                    <th>Quinta</th>
+                    <th>Sexta</th>
+                    <th>Sábado</th>
+                </tr>
+            </thead>
+            <tbody id="horarios">
                 {% for agendamento in agendamentos %}
-                    <div class="col-md-4">
-                        <div class="card agendamento-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Horario: {{ agendamento.data_hora }}</h5>
-                                <p class="card-text">
-                                    {% if agendamento.nome_cliente %}
-                                    <p class="card-text"><strong>Cliente:</strong> {{ agendamento.nome_cliente }}</p>
-
-                                    {% else %}
-                                        <span class="text-warning">Aguardando cliente</span>
-                                    {% endif %}
-                                </p>
-                                <p class="card-text"><strong>Profissional:</strong> {{ agendamento.nome_profissional }}</p>                            
-                                <p class="card-text"><strong>Identificador Profissional:</strong> {{ agendamento.profissional_id }}</p>
-                            </div>
-                        </div>   
-                    </div>
+                    <tr>
+                        <td><input type="checkbox" {% if agendamento.disponivel == False %} checked disabled {% endif %}> {{ agendamento.data_hora }}</td>
+                        <td><input type="checkbox" {% if agendamento.disponivel == False %} checked disabled {% endif %}></td>
+                        <td><input type="checkbox" {% if agendamento.disponivel == False %} checked disabled {% endif %}></td>
+                        <td><input type="checkbox" {% if agendamento.disponivel == False %} checked disabled {% endif %}></td>
+                        <td><input type="checkbox" {% if agendamento.disponivel == False %} checked disabled {% endif %}></td>
+                        <td><input type="checkbox" {% if agendamento.disponivel == False %} checked disabled {% endif %}></td>
+                        <td><input type="checkbox" {% if agendamento.disponivel == False %} checked disabled {% endif %}></td>
+                        <td><input type="checkbox" {% if agendamento.disponivel == False %} checked disabled {% endif %}></td>
+                    </tr>
                 {% endfor %}
-            {% else %}
-                <p>Você ainda não tem agendamentos.</p>
-            {% endif %}
-        </div>
-
-       
+            </tbody>
+        </table>
+        <button id="adicionarLinha" class="btn btn-success">Adicionar Linha</button>
     </div>
+
     <script>
         // Inicializa o Flatpickr no campo de data e hora
         flatpickr("#data_hora", {
@@ -54,5 +58,17 @@
             dateFormat: "Y-m-d H:i", // Formato de data e hora: Ano-Mês-Dia Hora:Minuto
             time_24hr: true, // Para horário 24h
         });
+
+        // Adiciona uma nova linha na tabela ao clicar no botão
+        document.getElementById('adicionarLinha').onclick = function() {
+            const table = document.getElementById('horarios');
+            const newRow = table.insertRow();
+            const horarioCell = newRow.insertCell(0);
+            horarioCell.innerHTML = '<input type="checkbox"> 08:30'; // Exemplo de horário, pode ser modificado conforme necessário
+            for (let i = 1; i <= 7; i++) {
+                const cell = newRow.insertCell(i);
+                cell.innerHTML = '<input type="checkbox">';
+            }
+        };
     </script>
 {% endblock %}

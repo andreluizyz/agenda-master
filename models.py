@@ -5,14 +5,19 @@ db = SQLAlchemy()
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(150), unique=True, nullable=False)
+    nome = db.Column(db.String(150), nullable=False)
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    telefone = db.Column(db.String(15), nullable=False)
+    endereco_barbearia = db.Column(db.String(255), nullable=False)
+    nome_barbearia = db.Column(db.String(150), nullable=False)
     password = db.Column(db.String(150), nullable=False)
-    agendamentos = db.relationship('Agendamento', backref='cliente', lazy=True) 
+    agendamentos = db.relationship('Agendamento', backref='cliente', lazy=True)
 
 class Profissional(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
     agendamentos = db.relationship('Agendamento', backref='profissional', lazy=True)  
+
 
 class Agendamento(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,4 +26,4 @@ class Agendamento(db.Model):
     profissional_id = db.Column(db.Integer, db.ForeignKey('profissional.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True) 
     nome_cliente = db.Column(db.String(100), nullable=True)  
-    disponivel = db.Column(db.Boolean, default=True) 
+    disponivel = db.Column(db.Boolean, default=True)  

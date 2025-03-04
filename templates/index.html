@@ -11,6 +11,11 @@
                     <div class="col-md-4">
                         <div class="card agendamento-card">
                             <div class="card-body">
+                                <form method="GET" action="{{ url_for('index') }}">
+                                    <input type="text" name="pesquisar" placeholder="Pesquisar barbeiro">
+                                    <button type="submit">Pesquisar</button>
+                                </form>
+                                
                                 <h5 class="card-title">Horarios livres: {{ agendamento.data_hora }}</h5>
                                 <p class="card-text"><strong>Profissional:</strong> {{ agendamento.nome_profissional }}</p>                            
                                 <p class="card-text"><strong>Identificador Profissional:</strong> {{ agendamento.profissional_id }}</p>

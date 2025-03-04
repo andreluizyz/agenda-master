@@ -28,10 +28,15 @@ with app.app_context():
     db.create_all()
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
-    agendamentos = Agendamento.query.filter_by(disponivel=True).all() 
+    pesquisar = request.args.get('pesquisar')
+    if pesquisar:
+        agendamentos = Agendamento.query.filter(Agendamento.nome_profissional.ilike(f'%{pesquisar}%')).all()
+    else:
+        agendamentos = Agendamento.query.filter_by(disponivel=True).all()
     return render_template('index.html', agendamentos=agendamentos)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -48,12 +53,20 @@ def login():
 def cadastro():
     form = CadastroForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, password=form.password.data)
+        user = User(
+            nome=form.nome.data,
+            email=form.email.data,
+            telefone=form.telefone.data,
+            endereco_barbearia=form.endereco_barbearia.data,
+            nome_barbearia=form.nome_barbearia.data,
+            password=form.password.data
+        )
         db.session.add(user)
         db.session.commit()
         flash('Usuário cadastrado com sucesso!', 'success')
         return redirect(url_for('login'))
     return render_template('cadastro.html', form=form)
+
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
